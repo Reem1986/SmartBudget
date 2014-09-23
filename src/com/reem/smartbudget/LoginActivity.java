@@ -1,6 +1,6 @@
 package com.reem.smartbudget;
 
-
+import com.reem.smartbudget.HomeActivity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -14,79 +14,80 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginActivity extends Activity {
-	    private Button buttonSubmit;
-	    private EditText editTextPassword;
-	    private boolean isPinFirstTime = true;
-	    
+	private Button buttonSubmit;
+	private EditText editTextPassword;
+	private boolean isPinFirstTime = true;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		
+
 		buttonSubmit = (Button) findViewById(R.id.buttonSubmit);
-        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+		editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
-        String loadedPinValue = BudgetPreferences.loadPinFromFile(getApplicationContext());
+		String loadedPinValue = BudgetPreferences
+				.loadPinFromFile(getApplicationContext());
 
-        if (loadedPinValue.equals(""))
-        {
-            buttonSubmit.setText("Save pin for first time");
-            isPinFirstTime = true;
-        }
-        else
-        {
-            buttonSubmit.setText("Enter pin");
-            isPinFirstTime = false;
-        }
+		if (loadedPinValue.equals("")) {
+			buttonSubmit.setText("Save pin for first time");
+			isPinFirstTime = true;
+		} else {
+			buttonSubmit.setText("Enter pin");
+			isPinFirstTime = false;
+		}
 
-        buttonSubmit.setOnClickListener(new OnClickListener() {
-        	@Override
-            public void onClick(View v)
-            {
+		buttonSubmit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
 
-                if (isPinFirstTime)
-                {
-                    BudgetPreferences.savePinToFile(getApplicationContext(), editTextPassword.getText().toString());
-                    
-                    Toast.makeText(getApplicationContext(), "Your pin has been saved", Toast.LENGTH_LONG).show();
-                }
-                else
-                {
+				if (isPinFirstTime) {
+					BudgetPreferences.savePinToFile(getApplicationContext(),
+							editTextPassword.getText().toString());
 
-                    final String loadedPin = BudgetPreferences.loadPinFromFile(getApplicationContext());
-                    final String enteredPin = editTextPassword.getText().toString();
+					Toast.makeText(getApplicationContext(),
+							"Your pin has been saved", Toast.LENGTH_LONG)
+							.show();
+				} else {
 
-                    if (enteredPin.equals(loadedPin))
-                    {
-                        Toast.makeText(getApplicationContext(), "Pin " + enteredPin + " is correct", Toast.LENGTH_LONG).show();
+					final String loadedPin = BudgetPreferences
+							.loadPinFromFile(getApplicationContext());
+					final String enteredPin = editTextPassword.getText()
+							.toString();
 
-                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                    else
+					if (enteredPin.equals(loadedPin)) {
+						Toast.makeText(getApplicationContext(),
+								"Pin " + enteredPin + " is correct",
+								Toast.LENGTH_LONG).show();
 
-                    {
-                        Toast.makeText(getApplicationContext(), "Pin " + enteredPin + " is wrong!!!", Toast.LENGTH_LONG).show();
-                    }
-                }
+						 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+	                        startActivity(intent);
 
-            }
-        });
+finish();
+					} else
 
-    }
-      
-	 @Override
-	    protected void onResume()
-	    {
-	        super.onResume();
-	    }
+					{
+						Toast.makeText(getApplicationContext(),
+								"Pin " + enteredPin + " is wrong!!!",
+								Toast.LENGTH_LONG).show();
+					}
+				}
 
-	    @Override
-	    protected void onPause()
-	    {
-	        super.onPause();
-	    }
+			}
+		});
+
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
