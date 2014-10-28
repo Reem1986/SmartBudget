@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="smartbudgetui.LoginActivity"
+            android:name="com.reem.smartbudget.smartbudgetui.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,8 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="smartbudgetui.HomeActivity" >
+        <activity android:name="com.reem.smartbudget.smartbudgetui.HomeActivity" >
         </activity>
+         <activity android:name="com.reem.smartbudget.smartbudgetui.FragmentBudgetAdd" >
+             </activity> 
+        <provider
+            android:name="com.reem.smartbudget.smartbudgetcontent.ProviderBudget"
+            android:authorities="com.reem.smartbudget.smartbudgetcontent.ProviderBudget"
+            android:exported="false" >
+        </provider>
     </application>
 
 </manifest>

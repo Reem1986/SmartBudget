@@ -7,14 +7,11 @@
     <string name="spinner_prompt">Select</string>
 
     <string-array name="spinner_array">
-        <item>Malaysia</item>
-        <item>United States</item>
-        <item>Indonesia</item>
-        <item>France</item>
-        <item>Italy</item>
-        <item>Singapore</item>
-        <item>New Zealand</item>
-        <item>India</item>
+        <item>weekly</item>
+        <item>fortnighly</item>
+        <item>monthly</item>
+        <item>yearly</item>
+     
     </string-array>
 
 </resources>
