@@ -62,7 +62,8 @@ public final class R {
         public static final int fragment_shoppinglist=0x7f030006;
         public static final int fragment_transfer=0x7f030007;
         public static final int home=0x7f030008;
-        public static final int item_income=0x7f030009;
+        public static final int item_expense=0x7f030009;
+        public static final int item_income=0x7f03000a;
     }
     public static final class menu {
         public static final int login=0x7f080000;

@@ -34,6 +34,8 @@ public class FragmentBudgetAdd extends FragmentActivity
         //check if there is an id being sent
         final String editId = getIntent().getStringExtra(ProviderBudget.KEY_ID);
 
+        final String typeOfTransaction = getIntent().getStringExtra("TYPE");
+
         //if it is an edit then do this
         if (editId != null)
         {
@@ -50,7 +52,7 @@ public class FragmentBudgetAdd extends FragmentActivity
         final Button buttonSave = (Button) findViewById(R.id.buttonSave);
         final EditText editTextName = (EditText) findViewById(R.id.editTextName);
         final EditText editTextAmount = (EditText) findViewById(R.id.editTextAmount);
-       
+
 
         //if it was an edit
         if (!isAdd)
@@ -58,8 +60,12 @@ public class FragmentBudgetAdd extends FragmentActivity
             //add intent extras data to your views as this is an edit call
             //populate all your views with the intent extra values that you are getting
             editTextName.setText(getIntent().getStringExtra(ProviderBudget.KEY_NAME));
-            editTextAmount.setText(getIntent().getStringExtra(ProviderBudget.KEY_AMOUNT));
-            
+
+            if (typeOfTransaction.equals("INCOME"))
+            	editTextAmount.setText(getIntent().getStringExtra(ProviderBudget.KEY_AMOUNT));
+            else
+            	editTextAmount.setText(getIntent().getStringExtra(ProviderBudget.KEY_AMOUNT).replace("-", ""));
+
         }
 
         //button icon
@@ -124,7 +130,11 @@ public class FragmentBudgetAdd extends FragmentActivity
 
                 //populate the transaction object with all the values in our views
                 newTransaction.name = editTextName.getText().toString();
-                newTransaction.amount = Float.parseFloat(editTextAmount.getText().toString());
+
+                if (typeOfTransaction.equals("INCOME"))
+                	newTransaction.amount = Float.parseFloat(editTextAmount.getText().toString());
+                else
+                	newTransaction.amount = - Float.parseFloat(editTextAmount.getText().toString());
 
                 //using the id, our addTransaction function can know if it needs to edit or add
                 ProviderBudget.addTransaction(getApplicationContext(), newTransaction);
