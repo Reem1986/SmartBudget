@@ -36,25 +36,25 @@ public final class R {
         public static final int buttonIncomeAdd=0x7f090003;
         public static final int buttonSave=0x7f09000e;
         public static final int buttonSubmit=0x7f090000;
-        public static final int datePicker1=0x7f090012;
+        public static final int datePicker1=0x7f090016;
         public static final int editTextAmount=0x7f09000c;
         public static final int editTextName=0x7f09000b;
         public static final int editTextPassword=0x7f090001;
         public static final int listViewExpense=0x7f09000a;
         public static final int listViewIncome=0x7f090007;
-        public static final int pager=0x7f090016;
-        public static final int scrollViewExpense=0x7f090010;
-        public static final int scrollViewRepeat=0x7f090014;
+        public static final int pager=0x7f090010;
+        public static final int scrollViewExpense=0x7f090015;
+        public static final int scrollViewRepeat=0x7f090018;
         public static final int textView1=0x7f090002;
-        public static final int textViewAmount=0x7f090011;
+        public static final int textViewAmount=0x7f090012;
         public static final int textViewExpensesRemaining=0x7f090009;
-        public static final int textViewId=0x7f090017;
+        public static final int textViewId=0x7f090011;
         public static final int textViewIncomeRemaining=0x7f090005;
         public static final int textViewIncomeSpending=0x7f090006;
         public static final int textViewIncomeTotal=0x7f090004;
-        public static final int textViewName=0x7f090018;
-        public static final int textViewNote=0x7f090015;
-        public static final int timePicker1=0x7f090013;
+        public static final int textViewName=0x7f090013;
+        public static final int textViewNote=0x7f090014;
+        public static final int timePicker1=0x7f090017;
     }
     public static final class layout {
         public static final int activity_login=0x7f030000;
@@ -68,6 +68,7 @@ public final class R {
         public static final int home=0x7f030008;
         public static final int item_expense=0x7f030009;
         public static final int item_income=0x7f03000a;
+        public static final int item_reminder=0x7f03000b;
     }
     public static final class menu {
         public static final int login=0x7f080000;
