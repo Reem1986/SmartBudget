@@ -32,12 +32,12 @@ public class ProviderBudget extends ProviderSuper
     public static String getRemaining(Context context)
     {
         //implementing SINGLETON PATTERN by using a base object in order to access private variables from a static function
-        
-        //equivalent sql query: "select sum(amount) - sum(expenses) from budget" 
+
+        //equivalent sql query: "select sum(amount) - sum(expenses) from budget"
         Cursor cursor = base.db.rawQuery("SELECT SUM(" + KEY_AMOUNT + ") FROM " + TABLE_NAME, null);
 
         int remaining = 0;
-        
+
         //check if there was any error or not
         if (cursor != null)
         {
@@ -59,16 +59,11 @@ public class ProviderBudget extends ProviderSuper
 
         return remaining + "";
     }
-    
-    public static String getTotal(Context context)
-    {
-        //implementing SINGLETON PATTERN by using a base object in order to access private variables from a static function
-        
-        //equivalent sql query: "select sum(amount) from budget" 
-        Cursor cursor = base.db.rawQuery("SELECT SUM(" + KEY_AMOUNT + ") FROM " + TABLE_NAME, null);
 
-        int sum = 0;
-        
+    private static String getValue(Cursor cursor)
+    {
+    	int sum = 0;
+
         //check if there was any error or not
         if (cursor != null)
         {
@@ -89,6 +84,26 @@ public class ProviderBudget extends ProviderSuper
         }
 
         return sum + "";
+    }
+
+    public static String getTotalIncome(Context context)
+    {
+        //implementing SINGLETON PATTERN by using a base object in order to access private variables from a static function
+
+        //equivalent sql query: "select sum(amount) from budget"
+        Cursor cursor = base.db.rawQuery("SELECT SUM(" + KEY_AMOUNT + ") FROM " + TABLE_NAME + " WHERE " + KEY_AMOUNT + " >= 0", null);
+
+        return getValue(cursor);
+    }
+
+    public static String getTotalExpense(Context context)
+    {
+        //implementing SINGLETON PATTERN by using a base object in order to access private variables from a static function
+
+        //equivalent sql query: "select sum(amount) from budget"
+        Cursor cursor = base.db.rawQuery("SELECT SUM(" + KEY_AMOUNT + ") FROM " + TABLE_NAME + " WHERE " + KEY_AMOUNT + " < 0", null);
+
+        return getValue(cursor);
     }
 
     //to insert or update a value we call this function
@@ -182,7 +197,7 @@ public class ProviderBudget extends ProviderSuper
         return (db == null) ? false : true;
     }
 
-   
+
     public static String[] getColumns()
     {
         return new String[] { _ID, KEY_ID, KEY_NAME, KEY_AMOUNT, KEY_CREDIT_CARD, KEY_CYCLE, KEY_ICON, KEY_DATE, KEY_NOTE };

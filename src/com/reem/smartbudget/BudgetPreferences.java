@@ -1,25 +1,31 @@
+
 package com.reem.smartbudget;
+
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class BudgetPreferences {
-	public static void savePinToFile(Context context, String pinValue) {
-		SharedPreferences sharedPreferences = context.getSharedPreferences(
-				context.getPackageName(), Context.MODE_PRIVATE);
 
-		sharedPreferences.edit().putString("pin", pinValue).commit();
-	}
+public class BudgetPreferences
+{
+    public static void savePinToFile(Context context, String pinValue)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                context.getPackageName(), Context.MODE_PRIVATE);
 
-	public static String loadPinFromFile(Context context) {
-		String pinValue = "";
+        sharedPreferences.edit().putString("pin", pinValue).commit();
+    }
 
-		SharedPreferences sharedPreferences = context.getSharedPreferences(
-				context.getPackageName(), Context.MODE_PRIVATE);
+    public static String loadPinFromFile(Context context)
+    {
+        String pinValue = "";
 
-		pinValue = sharedPreferences.getString("pin", "");
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                context.getPackageName(), Context.MODE_PRIVATE);
 
-		return pinValue;
+        pinValue = sharedPreferences.getString("pin", "");
 
-	}
+        return pinValue;
+
+    }
 }

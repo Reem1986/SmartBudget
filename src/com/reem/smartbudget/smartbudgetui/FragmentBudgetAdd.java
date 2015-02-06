@@ -2,9 +2,7 @@ package com.reem.smartbudget.smartbudgetui;
 
 
 import android.graphics.drawable.Drawable;
-import android.net.TrafficStats;
 import android.os.Bundle;
-import android.os.TransactionTooLargeException;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.reem.smartbudget.R;
 import com.reem.smartbudget.smartbudgetcontent.ClassTransaction;
 import com.reem.smartbudget.smartbudgetcontent.ProviderBudget;

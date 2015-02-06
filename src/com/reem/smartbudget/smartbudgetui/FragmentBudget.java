@@ -1,4 +1,6 @@
+
 package com.reem.smartbudget.smartbudgetui;
+
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,276 +22,320 @@ import android.widget.Toast;
 import com.reem.smartbudget.R;
 import com.reem.smartbudget.smartbudgetcontent.ProviderBudget;
 
-public class FragmentBudget extends Fragment {
 
-	SimpleCursorAdapter simpleCursorAdapterIncome;
-	SimpleCursorAdapter simpleCursorAdapterExpense;
+public class FragmentBudget extends Fragment
+{
 
-	@Override
-	public View onCreateView(final LayoutInflater inflater,
-			final ViewGroup container, final Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_budget, container,
-				false);
+    SimpleCursorAdapter simpleCursorAdapterIncome;
+    SimpleCursorAdapter simpleCursorAdapterExpense;
 
-		Button buttonIncomeAdd = (Button) rootView
-				.findViewById(R.id.buttonIncomeAdd);
-		Button buttonExpenseAdd = (Button) rootView
-				.findViewById(R.id.buttonExpenseAdd);
+    TextView textViewIncomeTotal;       //the total of all income items
+    TextView textViewIncomeRemaining;   //total income - total expenses
+    TextView textViewIncomeSpending;    //total expense
 
-		final TextView textViewTotal = (TextView) rootView
-				.findViewById(R.id.textViewIncomeTotal);
-		final TextView textViewRemaining = (TextView) rootView
-				.findViewById(R.id.textViewIncomeRemaining);
+    TextView textViewExpenseTotal;      //total expense
+    TextView textViewExpenseRemaining;  //total expense - expense spending
+    TextView textViewExpenseSpending;   //
 
-		String[] from = new String[] { ProviderBudget.KEY_ID,
-				ProviderBudget.KEY_NAME, ProviderBudget.KEY_AMOUNT,
-				ProviderBudget.KEY_NOTE };
+    @Override
+    public View onCreateView(final LayoutInflater inflater,
+            final ViewGroup container, final Bundle savedInstanceState)
+    {
+        View rootView = inflater.inflate(R.layout.fragment_budget, container,
+                false);
 
-		int[] to = new int[] { R.id.textViewId, R.id.textViewName,
-				R.id.textViewAmount, R.id.textViewNote };
+        Button buttonIncomeAdd = (Button) rootView
+                .findViewById(R.id.buttonIncomeAdd);
+        Button buttonExpenseAdd = (Button) rootView
+                .findViewById(R.id.buttonExpenseAdd);
 
-		simpleCursorAdapterIncome = new SimpleCursorAdapter(inflater.getContext(),
-				R.layout.item_income, null, from, to, 0);
+        textViewIncomeTotal = (TextView) rootView
+                .findViewById(R.id.textViewIncomeTotal);
+        textViewIncomeRemaining = (TextView) rootView
+                .findViewById(R.id.textViewIncomeRemaining);
+        textViewIncomeSpending = (TextView) rootView
+                .findViewById(R.id.textViewIncomeSpending);
+        textViewExpenseTotal = (TextView) rootView
+                .findViewById(R.id.textViewExpensesTotal);
+        textViewExpenseRemaining = (TextView) rootView
+                .findViewById(R.id.textViewExpensesRemaining);
+        textViewExpenseSpending = (TextView) rootView
+                .findViewById(R.id.textViewExpensesSpending);
 
-		simpleCursorAdapterExpense = new SimpleCursorAdapter(inflater.getContext(),
-				R.layout.item_expense, null, from, to, 0);
+        String[] from = new String[] { ProviderBudget.KEY_ID,
+                ProviderBudget.KEY_NAME, ProviderBudget.KEY_AMOUNT,
+                ProviderBudget.KEY_NOTE };
 
+        int[] to = new int[] { R.id.textViewId, R.id.textViewName,
+                R.id.textViewAmount, R.id.textViewNote };
 
+        simpleCursorAdapterIncome = new SimpleCursorAdapter(
+                inflater.getContext(), R.layout.item_income, null, from, to, 0);
 
-		ListView listViewIncome = (ListView) rootView
-				.findViewById(R.id.listViewIncome);
-		listViewIncome.setAdapter(simpleCursorAdapterIncome);
+        simpleCursorAdapterExpense = new SimpleCursorAdapter(
+                inflater.getContext(), R.layout.item_expense, null, from, to, 0);
 
-		ListView listViewExpense = (ListView) rootView
-				.findViewById(R.id.listViewExpense);
-		listViewExpense.setAdapter(simpleCursorAdapterExpense);
+        ListView listViewIncome = (ListView) rootView
+                .findViewById(R.id.listViewIncome);
+        listViewIncome.setAdapter(simpleCursorAdapterIncome);
 
-		// long click listener on list view
-		listViewIncome
-				.setOnItemLongClickListener(new OnItemLongClickListener() {
+        ListView listViewExpense = (ListView) rootView
+                .findViewById(R.id.listViewExpense);
+        listViewExpense.setAdapter(simpleCursorAdapterExpense);
 
-					@Override
-					public boolean onItemLongClick(AdapterView<?> arg0,
-							View arg1, int index, long arg3) {
+        // long click listener on list view
+        listViewIncome
+                .setOnItemLongClickListener(new OnItemLongClickListener() {
 
-						Cursor cursor = (Cursor) simpleCursorAdapterIncome
-								.getItem(index);
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> arg0,
+                            View arg1, int index, long arg3)
+                    {
 
-						// get the values of the item where i long clicked
-						// extract ALL values from the cursor which you need to
-						// edit or show
-						String transactionId = cursor.getString(cursor
-								.getColumnIndex(ProviderBudget.KEY_ID));
-						String transactionName = cursor.getString(cursor
-								.getColumnIndex(ProviderBudget.KEY_NAME));
-						String transactionAmount = cursor.getString(cursor
-								.getColumnIndex(ProviderBudget.KEY_AMOUNT));
-						String note = cursor.getString(cursor
-								.getColumnIndex(ProviderBudget.KEY_NOTE));
+                        Cursor cursor = (Cursor) simpleCursorAdapterIncome
+                                .getItem(index);
 
-						Toast.makeText(
-								getActivity(),
-								"item " + transactionId + ", "
-										+ transactionName + ", "
-										+ transactionAmount, Toast.LENGTH_LONG)
-								.show();
+                        // get the values of the item where i long clicked
+                        // extract ALL values from the cursor which you need to
+                        // edit or show
+                        String transactionId = cursor.getString(cursor
+                                .getColumnIndex(ProviderBudget.KEY_ID));
+                        String transactionName = cursor.getString(cursor
+                                .getColumnIndex(ProviderBudget.KEY_NAME));
+                        String transactionAmount = cursor.getString(cursor
+                                .getColumnIndex(ProviderBudget.KEY_AMOUNT));
+                        String note = cursor.getString(cursor
+                                .getColumnIndex(ProviderBudget.KEY_NOTE));
 
-						// start the add activity, but give it the values so
-						// that it can edit the existing data
-						Intent intent = new Intent(getActivity(),
-								FragmentBudgetAdd.class);
+                        Toast.makeText(
+                                getActivity(),
+                                "item " + transactionId + ", "
+                                        + transactionName + ", "
+                                        + transactionAmount, Toast.LENGTH_LONG)
+                                .show();
 
-						// add all the remaining values that you have extraceted
-						// from the cursor
-						intent.putExtra(ProviderBudget.KEY_ID, transactionId);
-						intent.putExtra(ProviderBudget.KEY_NAME,
-								transactionName);
-						intent.putExtra(ProviderBudget.KEY_AMOUNT,
-								transactionAmount);
-						intent.putExtra(ProviderBudget.KEY_NOTE, note);
+                        // start the add activity, but give it the values so
+                        // that it can edit the existing data
+                        Intent intent = new Intent(getActivity(),
+                                FragmentBudgetAdd.class);
 
-						intent.putExtra("TYPE", "INCOME");
+                        // add all the remaining values that you have extraceted
+                        // from the cursor
+                        intent.putExtra(ProviderBudget.KEY_ID, transactionId);
+                        intent.putExtra(ProviderBudget.KEY_NAME,
+                                transactionName);
+                        intent.putExtra(ProviderBudget.KEY_AMOUNT,
+                                transactionAmount);
+                        intent.putExtra(ProviderBudget.KEY_NOTE, note);
 
-						startActivity(intent);
+                        intent.putExtra("TYPE", "INCOME");
 
-						return true;
-					}
-				});
+                        startActivity(intent);
 
-		listViewExpense
-		.setOnItemLongClickListener(new OnItemLongClickListener() {
+                        return true;
+                    }
+                });
 
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0,
-					View arg1, int index, long arg3) {
+        listViewExpense
+                .setOnItemLongClickListener(new OnItemLongClickListener() {
 
-				Cursor cursor = (Cursor) simpleCursorAdapterExpense
-						.getItem(index);
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> arg0,
+                            View arg1, int index, long arg3)
+                    {
 
-				// get the values of the item where i long clicked
-				// extract ALL values from the cursor which you need to
-				// edit or show
-				String transactionId = cursor.getString(cursor
-						.getColumnIndex(ProviderBudget.KEY_ID));
-				String transactionName = cursor.getString(cursor
-						.getColumnIndex(ProviderBudget.KEY_NAME));
-				String transactionAmount = cursor.getString(cursor
-						.getColumnIndex(ProviderBudget.KEY_AMOUNT));
-				String note = cursor.getString(cursor
-						.getColumnIndex(ProviderBudget.KEY_NOTE));
+                        Cursor cursor = (Cursor) simpleCursorAdapterExpense
+                                .getItem(index);
 
-				Toast.makeText(
-						getActivity(),
-						"item " + transactionId + ", "
-								+ transactionName + ", "
-								+ transactionAmount, Toast.LENGTH_LONG)
-						.show();
+                        // get the values of the item where i long clicked
+                        // extract ALL values from the cursor which you need to
+                        // edit or show
+                        String transactionId = cursor.getString(cursor
+                                .getColumnIndex(ProviderBudget.KEY_ID));
+                        String transactionName = cursor.getString(cursor
+                                .getColumnIndex(ProviderBudget.KEY_NAME));
+                        String transactionAmount = cursor.getString(cursor
+                                .getColumnIndex(ProviderBudget.KEY_AMOUNT));
+                        String note = cursor.getString(cursor
+                                .getColumnIndex(ProviderBudget.KEY_NOTE));
 
-				// start the add activity, but give it the values so
-				// that it can edit the existing data
-				Intent intent = new Intent(getActivity(),
-						FragmentBudgetAdd.class);
+                        Toast.makeText(
+                                getActivity(),
+                                "item " + transactionId + ", "
+                                        + transactionName + ", "
+                                        + transactionAmount, Toast.LENGTH_LONG)
+                                .show();
 
-				// add all the remaining values that you have extraceted
-				// from the cursor
-				intent.putExtra(ProviderBudget.KEY_ID, transactionId);
-				intent.putExtra(ProviderBudget.KEY_NAME,
-						transactionName);
-				intent.putExtra(ProviderBudget.KEY_AMOUNT,
-						transactionAmount);
-				intent.putExtra(ProviderBudget.KEY_NOTE, note);
+                        // start the add activity, but give it the values so
+                        // that it can edit the existing data
+                        Intent intent = new Intent(getActivity(),
+                                FragmentBudgetAdd.class);
 
-				intent.putExtra("TYPE", "EXPENSE");
+                        // add all the remaining values that you have extraceted
+                        // from the cursor
+                        intent.putExtra(ProviderBudget.KEY_ID, transactionId);
+                        intent.putExtra(ProviderBudget.KEY_NAME,
+                                transactionName);
+                        intent.putExtra(ProviderBudget.KEY_AMOUNT,
+                                transactionAmount);
+                        intent.putExtra(ProviderBudget.KEY_NOTE, note);
 
-				startActivity(intent);
+                        intent.putExtra("TYPE", "EXPENSE");
 
-				return true;
-			}
-		});
+                        startActivity(intent);
 
-		buttonIncomeAdd.setOnClickListener(new OnClickListener() {
+                        return true;
+                    }
+                });
 
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(inflater.getContext(),
-						FragmentBudgetAdd.class);
-				i.putExtra("TYPE", "INCOME");
-				startActivity(i);
-			}
-		});
+        buttonIncomeAdd.setOnClickListener(new OnClickListener() {
 
-		buttonExpenseAdd.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(inflater.getContext(),
+                        FragmentBudgetAdd.class);
+                i.putExtra("TYPE", "INCOME");
+                startActivity(i);
+            }
+        });
 
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(inflater.getContext(),
-						FragmentBudgetAdd.class);
-				i.putExtra("TYPE", "EXPENSE");
-				startActivity(i);
+        buttonExpenseAdd.setOnClickListener(new OnClickListener() {
 
-			}
-		});
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(inflater.getContext(),
+                        FragmentBudgetAdd.class);
+                i.putExtra("TYPE", "EXPENSE");
+                startActivity(i);
 
-		// loader manager manages data loading from the table
-		// it provides us with some callback functions by using LoaderCallbacks
-		// so that we can update our views with the latest data
+            }
+        });
 
-		getLoaderManager().initLoader(0, null, new LoaderCallbacks<Cursor>() {
+        // loader manager manages data loading from the table
+        // it provides us with some callback functions by using LoaderCallbacks
+        // so that we can update our views with the latest data
 
-			// on create loader gets called whenever the fragment is loaded for
-			// the first time
-			@Override
-			public android.support.v4.content.Loader<Cursor> onCreateLoader(
-					int arg0, Bundle arg1) {
-				// projection are the database fields that will be returned
-				String[] projection = ProviderBudget.getColumns();
+        getLoaderManager().initLoader(0, null, new LoaderCallbacks<Cursor>() {
 
-				// selection are the database fields on which the query will be
-				// run
-				String selection = "amount >= ?";
+            // on create loader gets called whenever the fragment is loaded for
+            // the first time
+            @Override
+            public android.support.v4.content.Loader<Cursor> onCreateLoader(
+                    int arg0, Bundle arg1)
+            {
+                // projection are the database fields that will be returned
+                String[] projection = ProviderBudget.getColumns();
 
-				// selectionArgs are the criteria for the selection fields
-				String[] selectionArgs = new String[] { "0" };
+                // selection are the database fields on which the query will be
+                // run
+                String selection = "amount >= ?";
 
-				// return me the cursor for the query that i just made by using
-				// projection, selection and selectionArgs
-				return new android.support.v4.content.CursorLoader(
-						getActivity(), ProviderBudget.CONTENT_URI, projection,
-						selection, selectionArgs, null);
-			}
+                // selectionArgs are the criteria for the selection fields
+                String[] selectionArgs = new String[] { "0" };
 
-			// on load finished means that loading has finished and update your
-			// views with new data
-			@Override
-			public void onLoadFinished(
-					android.support.v4.content.Loader<Cursor> arg0,
-					Cursor cursor) {
-				// update the adapter with new database values
-				simpleCursorAdapterIncome.swapCursor(cursor);
+                // return me the cursor for the query that i just made by using
+                // projection, selection and selectionArgs
+                return new android.support.v4.content.CursorLoader(
+                        getActivity(), ProviderBudget.CONTENT_URI, projection,
+                        selection, selectionArgs, null);
+            }
 
-				// manually update all other views with updated database values
-				String total = ProviderBudget.getTotal(getActivity());
-				textViewTotal.setText("Total: " + total);
+            // on load finished means that loading has finished and update your
+            // views with new data
+            @Override
+            public void onLoadFinished(
+                    android.support.v4.content.Loader<Cursor> arg0,
+                    Cursor cursor)
+            {
+                // update the adapter with new database values
+                simpleCursorAdapterIncome.swapCursor(cursor);
 
-				textViewRemaining.setText("Remaining: " + total);
+                refreshTextViews();
 
-			}
+            }
 
-			// on loader reset gets called when the loader is reset
-			@Override
-			public void onLoaderReset(
-					android.support.v4.content.Loader<Cursor> arg0) {
-				simpleCursorAdapterIncome.swapCursor(null);
-			}
-		});
+            // on loader reset gets called when the loader is reset
+            @Override
+            public void onLoaderReset(
+                    android.support.v4.content.Loader<Cursor> arg0)
+            {
+                simpleCursorAdapterIncome.swapCursor(null);
+            }
+        });
 
-		//this is the loader for the expense list view
-		getLoaderManager().initLoader(1, null, new LoaderCallbacks<Cursor>() {
+        // this is the loader for the expense list view
+        getLoaderManager().initLoader(1, null, new LoaderCallbacks<Cursor>() {
 
-			// on create loader gets called whenever the fragment is loaded for
-			// the first time
-			@Override
-			public android.support.v4.content.Loader<Cursor> onCreateLoader(
-					int arg0, Bundle arg1) {
-				// projection are the database fields that will be returned
-				String[] projection = ProviderBudget.getColumns();
+            // on create loader gets called whenever the fragment is loaded for
+            // the first time
+            @Override
+            public android.support.v4.content.Loader<Cursor> onCreateLoader(
+                    int arg0, Bundle arg1)
+            {
+                // projection are the database fields that will be returned
+                String[] projection = ProviderBudget.getColumns();
 
-				// selection are the database fields on which the query will be
-				// run
-				String selection = "amount < ?";
+                // selection are the database fields on which the query will be
+                // run
+                String selection = "amount < ?";
 
-				// selectionArgs are the criteria for the selection fields
-				String[] selectionArgs = new String[] { "0" };
+                // selectionArgs are the criteria for the selection fields
+                String[] selectionArgs = new String[] { "0" };
 
-				// return me the cursor for the query that i just made by using
-				// projection, selection and selectionArgs
-				return new android.support.v4.content.CursorLoader(getActivity(), ProviderBudget.CONTENT_URI, projection,
-						selection, selectionArgs, null);
-			}
+                // return me the cursor for the query that i just made by using
+                // projection, selection and selectionArgs
+                return new android.support.v4.content.CursorLoader(
+                        getActivity(), ProviderBudget.CONTENT_URI, projection,
+                        selection, selectionArgs, null);
+            }
 
-			// on load finished means that loading has finished and update your
-			// views with new data
-			@Override
-			public void onLoadFinished(
-					android.support.v4.content.Loader<Cursor> arg0,
-					Cursor cursor) {
-				// update the adapter with new database values
-				simpleCursorAdapterExpense.swapCursor(cursor);
+            // on load finished means that loading has finished and update your
+            // views with new data
+            @Override
+            public void onLoadFinished(
+                    android.support.v4.content.Loader<Cursor> arg0,
+                    Cursor cursor)
+            {
+                // update the adapter with new database values
+                simpleCursorAdapterExpense.swapCursor(cursor);
 
+                refreshTextViews();
+            }
 
+            // on loader reset gets called when the loader is reset
+            @Override
+            public void onLoaderReset(
+                    android.support.v4.content.Loader<Cursor> arg0)
+            {
+                simpleCursorAdapterExpense.swapCursor(null);
+            }
+        });
 
-			}
+        return rootView;
 
-			// on loader reset gets called when the loader is reset
-			@Override
-			public void onLoaderReset(
-					android.support.v4.content.Loader<Cursor> arg0) {
-				simpleCursorAdapterExpense.swapCursor(null);
-			}
-		});
+    }
 
-		return rootView;
+    private void refreshTextViews()
+    {
+        // manually update all other views with updated database values
+        String totalIncome = ProviderBudget.getTotalIncome(getActivity());
+        String totalExpense = ProviderBudget.getTotalExpense(getActivity()).replace("-", "");
 
-	}
+        String remainingIncome = "" + (Integer.parseInt(totalIncome) - Integer.parseInt(totalExpense));
+        String spendingIncome = totalExpense;
 
+        String remainingExpense = "";
+        String spendingExpense = "";
+
+        textViewIncomeTotal.setText("Total: " + totalIncome);
+        textViewIncomeRemaining.setText("Savings: " + remainingIncome);
+        textViewIncomeSpending.setText("Spending: " + spendingIncome);
+
+        textViewExpenseTotal.setText("Total: " + totalExpense);
+
+        textViewExpenseRemaining.setText("Remaining: " + remainingExpense);
+        textViewExpenseSpending.setText("Spending: " + spendingExpense);
+    }
 }
