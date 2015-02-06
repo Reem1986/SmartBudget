@@ -31,6 +31,10 @@
             android:authorities="com.reem.smartbudget.smartbudgetcontent.ProviderBudget"
             android:exported="false" >
         </provider>
+        
+     
+        <receiver android:name="com.reem.smartbudget.AlarmReceiver" >
+        </receiver>
     </application>
 
 </manifest>
