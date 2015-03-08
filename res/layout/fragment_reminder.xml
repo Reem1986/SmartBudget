@@ -5,15 +5,15 @@
     android:orientation="vertical" >
 
     <Button
-        android:id="@+id/buttonReminderExact"
+        android:id="@+id/buttonReminderAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exact" />
+        android:text="Add Reminder" />
 
-    <Button
-        android:id="@+id/buttonReminderRepeating"
+    <ListView
+        android:id="@+id/listViewReminder"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Repeating" />
+        android:layout_height="match_parent" >
+    </ListView>
 
 </LinearLayout>

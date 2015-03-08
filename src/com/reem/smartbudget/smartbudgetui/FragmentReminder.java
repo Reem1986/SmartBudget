@@ -1,68 +1,93 @@
-
 package com.reem.smartbudget.smartbudgetui;
 
+import java.util.ArrayList;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
-import com.reem.smartbudget.AlarmReceiver;
+import android.widget.ListView;
+
+import com.reem.smartbudget.AdapterReminder;
+import com.reem.smartbudget.BudgetPreferences;
 import com.reem.smartbudget.R;
 
+public class FragmentReminder extends Fragment {
 
-public class FragmentReminder extends Fragment
-{
-    FragmentReminder base;
-    Button buttonReminderExact;
-    Button buttonReminderRepeating;
+	ArrayList<String> alarmsList;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState)
-    {
-        View rootView = inflater.inflate(R.layout.fragment_reminder, container,
-                false);
-        base = this;
+	@Override
+	public void onResume() {
+		super.onResume();
 
-        buttonReminderExact = (Button) rootView.findViewById(R.id.buttonReminderExact);
-        buttonReminderRepeating = (Button) rootView.findViewById(R.id.buttonReminderRepeating);
+		// get all the alarms from the shared preferences
+		alarmsList = BudgetPreferences.getAlarms(getActivity());
 
-        buttonReminderExact.setOnClickListener(new OnClickListener() {
+		// create the adapter
+		adapterReminder = new AdapterReminder(getActivity(), alarmsList);
 
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(base.getActivity().getApplicationContext(), AlarmReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(base.getActivity().getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                AlarmManager alarmManager = (AlarmManager) base.getActivity().getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 2000, pendingIntent);
-            }
-        });
+		// set the listview according to the adapter
+		listViewReminder.setAdapter(adapterReminder);
 
-        buttonReminderRepeating.setOnClickListener(new OnClickListener() {
+		listViewReminder
+				.setOnItemLongClickListener(new OnItemLongClickListener() {
 
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(base.getActivity().getApplicationContext(), AlarmReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(base.getActivity().getApplicationContext(), 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                AlarmManager alarmManager = (AlarmManager) base.getActivity().getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 2000, 5000, pendingIntent);
+					@Override
+					public boolean onItemLongClick(AdapterView<?> arg0,
+							View arg1, int position, long arg3) {
 
-                alarmManager.cancel(pendingIntent);
-            }
-        });
+						String alarm = alarmsList.get(position);
+						String key = alarm.split(",")[0];
 
+						BudgetPreferences.deleteString(getActivity(),
+								BudgetPreferences.KEY_REMINDER + "," + key);
 
+						alarmsList = BudgetPreferences.getAlarms(getActivity());
+						adapterReminder = new AdapterReminder(getActivity(),
+								alarmsList);
+						listViewReminder.setAdapter(adapterReminder);
+						adapterReminder.notifyDataSetChanged();
 
-        return rootView;
-    }
+						return false;
+					}
+				});
+	}
+
+	FragmentReminder base;
+	Button buttonReminderAdd;
+	ListView listViewReminder;
+	AdapterReminder adapterReminder;
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_reminder, container,
+				false);
+		base = this;
+
+		buttonReminderAdd = (Button) rootView
+				.findViewById(R.id.buttonReminderAdd);
+		listViewReminder = (ListView) rootView
+				.findViewById(R.id.listViewReminder);
+
+		buttonReminderAdd.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(base.getActivity()
+						.getApplicationContext(), ReminderAddActivity.class);
+				startActivity(intent);
+			}
+		});
+
+		return rootView;
+	}
 
 }

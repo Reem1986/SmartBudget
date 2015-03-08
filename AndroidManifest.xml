@@ -24,15 +24,26 @@
         </activity>
         <activity android:name="com.reem.smartbudget.smartbudgetui.HomeActivity" >
         </activity>
-         <activity android:name="com.reem.smartbudget.smartbudgetui.FragmentBudgetAdd" >
-             </activity> 
+        <activity android:name="com.reem.smartbudget.smartbudgetui.ReminderAddActivity" >
+        </activity>
+        <activity android:name="com.reem.smartbudget.smartbudgetui.ExpenseTransactionAddActivity" >
+        </activity>
+        <activity android:name="com.reem.smartbudget.smartbudgetui.ExpenseTransactionListActivity" >
+        </activity>
+        <activity android:name="com.reem.smartbudget.smartbudgetui.BudgetAddActivity" >
+        </activity>
+
         <provider
             android:name="com.reem.smartbudget.smartbudgetcontent.ProviderBudget"
             android:authorities="com.reem.smartbudget.smartbudgetcontent.ProviderBudget"
             android:exported="false" >
         </provider>
-        
-     
+        <provider
+            android:name="com.reem.smartbudget.smartbudgetcontent.ProviderExpenseTransaction"
+            android:authorities="com.reem.smartbudget.smartbudgetcontent.ProviderExpenseTransaction"
+            android:exported="false" >
+        </provider>
+
         <receiver android:name="com.reem.smartbudget.AlarmReceiver" >
         </receiver>
     </application>
