@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 public class ProviderExpenseTransaction extends ProviderSuper {
-	// base object to access provider budget object
+	
 	static private ProviderExpenseTransaction base;
 
 	public final static String TABLE_NAME = "expense_transaction";
@@ -25,11 +25,7 @@ public class ProviderExpenseTransaction extends ProviderSuper {
 
 	private final static String SELECTION = KEY_ID + " = ? ";
 
-		// to insert or update a value we call this function
-	// if the record already exists, then it is updated
-	// if the record does not exist, then a new record is inserted
-	// the return value tells us if a record was inserted, or how many records
-	// were updated
+	
 	public static int addTransaction(Context context,
 			ClassExpenseTransaction transaction) {
 
@@ -38,13 +34,10 @@ public class ProviderExpenseTransaction extends ProviderSuper {
 
 		final String[] selectionArgs = new String[] { transaction.id };
 
-		// contentvalues contains the value which we will insert/update in our
-		// table
+		
 		ContentValues updateValues = new ContentValues(0);
 
-		// now we will construct our contentvalues with the data that we want to
-		// insert/update
-
+		
 		if (transaction.id != null)
 			updateValues.put(KEY_ID, transaction.id);
 
@@ -65,23 +58,17 @@ public class ProviderExpenseTransaction extends ProviderSuper {
 		if (transaction.note != null)
 			updateValues.put(KEY_NOTE, transaction.note);
 
-		// we have added all data into the contentvalues
-
-		// if there was no data to write to the table, then simply exit with the
-		// value 0
+		
 		if (updateValues.size() <= 0)
 			return 0;
 
-		// call the update function onto the table
-		// and save the number of records that were updated
+		
 		int updateRowCount = ProviderSuper.update(context, CONTENT_URI,
 				updateValues, SELECTION, selectionArgs);
 
-		// if there were 0 records updated, then this means that the record does
-		// not exist
-		// so now we should insert this record into the table
+		
 		if (updateRowCount <= 0) {
-			// since there is no record for this transaction, add a new record
+			
 			ContentValues addValues = getContentValues(transaction);
 
 			ProviderSuper.insert(context, CONTENT_URI, addValues);
@@ -90,7 +77,7 @@ public class ProviderExpenseTransaction extends ProviderSuper {
 		return updateRowCount;
 	}
 
-	// this function deletes records from our table
+	
 	public static int deleteTransaction(Context context,
 			ClassExpenseTransaction transaction) {
 		String selection = KEY_ID + " = ?";
@@ -103,7 +90,7 @@ public class ProviderExpenseTransaction extends ProviderSuper {
 
 	@Override
 	public boolean onCreate() {
-		// the initialized object gets saved in my base object
+		
 		base = this;
 
 		tableName = TABLE_NAME;
@@ -132,12 +119,7 @@ public class ProviderExpenseTransaction extends ProviderSuper {
 				KEY_FROM_INCOME, KEY_DATE, KEY_NOTE };
 	}
 
-	// this is a helper function
-	// this function simply converts all my transaction data into contentvalue
-	// data inorder to insert new values for the first time
-	// if any data is null or not initialized, it will insert blank data
-	// we need to use this function to add a new record for the first time even
-	// if we don't have all the data for the record
+	
 	public static ContentValues getContentValues(
 			ClassExpenseTransaction transaction) {
 		ContentValues values = new ContentValues();

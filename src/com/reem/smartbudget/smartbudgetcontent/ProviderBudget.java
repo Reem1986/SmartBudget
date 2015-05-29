@@ -11,7 +11,7 @@ import android.net.Uri;
 
 public class ProviderBudget extends ProviderSuper
 {
-    //base object to access provider budget object
+   
     static private ProviderBudget base;
 
     public final static String TABLE_NAME = "budget";
@@ -31,28 +31,22 @@ public class ProviderBudget extends ProviderSuper
 
     public static String getRemaining(Context context)
     {
-        //implementing SINGLETON PATTERN by using a base object in order to access private variables from a static function
 
-        //equivalent sql query: "select sum(amount) - sum(expenses) from budget"
         Cursor cursor = base.db.rawQuery("SELECT SUM(" + KEY_AMOUNT + ") FROM " + TABLE_NAME, null);
 
         int remaining = 0;
 
-        //check if there was any error or not
         if (cursor != null)
         {
             try
             {
-                //move the cursor to the first column index
                 if (cursor.moveToFirst())
                 {
-                    //the first index will have the query result
                     remaining = cursor.getInt(0);
                 }
             }
             finally
             {
-                //close the cursor so that the db connection gets closed
                 cursor.close();
             }
         }
@@ -64,21 +58,21 @@ public class ProviderBudget extends ProviderSuper
     {
     	int sum = 0;
 
-        //check if there was any error or not
+        
         if (cursor != null)
         {
             try
             {
-                //then move the cursor to the first column index
+                
                 if (cursor.moveToFirst())
                 {
-                    //the first index will have the query result
+                    
                     sum = cursor.getInt(0);
                 }
             }
             finally
             {
-                //close the cursor so that the db connection gets closed
+                
                 cursor.close();
             }
         }
@@ -88,9 +82,6 @@ public class ProviderBudget extends ProviderSuper
 
     public static String getTotalIncome(Context context)
     {
-        //implementing SINGLETON PATTERN by using a base object in order to access private variables from a static function
-
-        //equivalent sql query: "select sum(amount) from budget"
         Cursor cursor = base.db.rawQuery("SELECT SUM(" + KEY_AMOUNT + ") FROM " + TABLE_NAME + " WHERE " + KEY_AMOUNT + " >= 0", null);
 
         return getValue(cursor);
@@ -98,18 +89,12 @@ public class ProviderBudget extends ProviderSuper
 
     public static String getTotalExpense(Context context)
     {
-        //implementing SINGLETON PATTERN by using a base object in order to access private variables from a static function
-
-        //equivalent sql query: "select sum(amount) from budget"
+        
         Cursor cursor = base.db.rawQuery("SELECT SUM(" + KEY_AMOUNT + ") FROM " + TABLE_NAME + " WHERE " + KEY_AMOUNT + " < 0", null);
 
         return getValue(cursor);
     }
 
-    //to insert or update a value we call this function
-    //if the record already exists, then it is updated
-    //if the record does not exist, then a new record is inserted
-    //the return value tells us if a record was inserted, or how many records were updated
     public static int addTransaction(Context context, ClassTransaction transaction)
     {
         if (transaction.id.equals(""))
@@ -117,10 +102,8 @@ public class ProviderBudget extends ProviderSuper
 
         final String[] selectionArgs = new String[] { transaction.id };
 
-        //contentvalues contains the value which we will insert/update in our table
         ContentValues updateValues = new ContentValues(0);
 
-        //now we will construct our contentvalues with the data that we want to insert/update
         if (transaction.id != null)
             updateValues.put(KEY_ID, transaction.id);
 
@@ -142,21 +125,17 @@ public class ProviderBudget extends ProviderSuper
         if (transaction.note != null)
             updateValues.put(KEY_NOTE, transaction.note);
 
-        //we have added all data into the contentvalues
-
-        //if there was no data to write to the table, then simply exit with the value 0
+        
         if (updateValues.size() <= 0)
             return 0;
 
-        //call the update function onto the table
-        //and save the number of records that were updated
+        
         int updateRowCount = ProviderSuper.update(context, CONTENT_URI, updateValues, SELECTION, selectionArgs);
 
-        //if there were 0 records updated, then this means that the record does not exist
-        //so now we should insert this record into the table
+        
         if (updateRowCount <= 0)
         {
-            //since there is no record for this transaction, add a new record
+           
             ContentValues addValues = getContentValues(transaction);
 
             ProviderSuper.insert(context, CONTENT_URI, addValues);
@@ -165,7 +144,7 @@ public class ProviderBudget extends ProviderSuper
         return updateRowCount;
     }
 
-    //this function deletes records from our table
+    
     public static int deleteTransaction(Context context, ClassTransaction transaction)
     {
         String selection = KEY_ID + " = ?";
@@ -178,7 +157,7 @@ public class ProviderBudget extends ProviderSuper
     @Override
     public boolean onCreate()
     {
-        //the initialized object gets saved in my base object
+      
         base = this;
 
         tableName = TABLE_NAME;
@@ -203,10 +182,7 @@ public class ProviderBudget extends ProviderSuper
         return new String[] { _ID, KEY_ID, KEY_NAME, KEY_AMOUNT, KEY_CREDIT_CARD, KEY_CYCLE, KEY_ICON, KEY_DATE, KEY_NOTE };
     }
 
-    //this is a helper function
-    //this function simply converts all my transaction data into contentvalue data inorder to insert new values for the first time
-    //if any data is null or not initialized, it will insert blank data
-    //we need to use this function to add a new record for the first time even if we don't have all the data for the record
+    
     public static ContentValues getContentValues(ClassTransaction transaction)
     {
         ContentValues values = new ContentValues();

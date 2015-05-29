@@ -84,6 +84,13 @@ public class BudgetPreferences {
 
 		sharedPreferences.edit().putString("pin", pinValue).commit();
 	}
+	
+	public static void saveCurrencyToFile(Context context, String currency) {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(
+				context.getPackageName(), Context.MODE_PRIVATE);
+
+		sharedPreferences.edit().putString("Currency", currency).commit();
+	}
 
 	public static String loadPinFromFile(Context context) {
 		String pinValue = "";
@@ -94,6 +101,17 @@ public class BudgetPreferences {
 		pinValue = sharedPreferences.getString("pin", "");
 
 		return pinValue;
+
+	}
+	public static String loadCurrencyFromFile(Context context) {
+		String currency = "";
+
+		SharedPreferences sharedPreferences = context.getSharedPreferences(
+				context.getPackageName(), Context.MODE_PRIVATE);
+
+		currency = sharedPreferences.getString("Currency", "");
+
+		return currency;
 
 	}
 }

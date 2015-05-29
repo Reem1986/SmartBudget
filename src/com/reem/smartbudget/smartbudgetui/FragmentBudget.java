@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.reem.smartbudget.BudgetPreferences;
 import com.reem.smartbudget.R;
 import com.reem.smartbudget.smartbudgetcontent.ProviderBudget;
 
@@ -26,24 +29,26 @@ public class FragmentBudget extends Fragment {
 	SimpleCursorAdapter simpleCursorAdapterIncome;
 	SimpleCursorAdapter simpleCursorAdapterExpense;
 
-	TextView textViewIncomeTotal; // the total of all income items
-	TextView textViewIncomeRemaining; // total income - total expenses
-	TextView textViewIncomeSpending; // total expense
+	TextView textViewIncomeTotal; 
+	TextView textViewIncomeRemaining; 
+	TextView textViewIncomeSpending; 
 
-	TextView textViewExpenseTotal; // total expense
-	TextView textViewExpenseRemaining; // total expense - expense spending
-	TextView textViewExpenseSpending; //
+	TextView textViewExpenseTotal; 
+	TextView textViewExpenseRemaining; 
+	TextView textViewExpenseSpending; 
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_budget, container,
 				false);
+		
 
 		Button buttonIncomeAdd = (Button) rootView
 				.findViewById(R.id.buttonIncomeAdd);
 		Button buttonExpenseAdd = (Button) rootView
 				.findViewById(R.id.buttonExpenseAdd);
+
 
 		textViewIncomeTotal = (TextView) rootView
 				.findViewById(R.id.textViewIncomeTotal);
@@ -77,9 +82,10 @@ public class FragmentBudget extends Fragment {
 
 		ListView listViewExpense = (ListView) rootView
 				.findViewById(R.id.listViewExpense);
+		
 		listViewExpense.setAdapter(simpleCursorAdapterExpense);
 
-		// long click listener on list view
+		
 		listViewIncome
 				.setOnItemLongClickListener(new OnItemLongClickListener() {
 
@@ -90,9 +96,7 @@ public class FragmentBudget extends Fragment {
 						Cursor cursor = (Cursor) simpleCursorAdapterIncome
 								.getItem(index);
 
-						// get the values of the item where i long clicked
-						// extract ALL values from the cursor which you need to
-						// edit or show
+						// get values 
 						String transactionId = cursor.getString(cursor
 								.getColumnIndex(ProviderBudget.KEY_ID));
 						String transactionName = cursor.getString(cursor
@@ -109,13 +113,11 @@ public class FragmentBudget extends Fragment {
 										+ transactionAmount, Toast.LENGTH_LONG)
 								.show();
 
-						// start the add activity, but give it the values so
-						// that it can edit the existing data
+						// start the add activity
 						Intent intent = new Intent(getActivity(),
 								BudgetAddActivity.class);
 
-						// add all the remaining values that you have extraceted
-						// from the cursor
+						// add all the remaining values
 						intent.putExtra(ProviderBudget.KEY_ID, transactionId);
 						intent.putExtra(ProviderBudget.KEY_NAME,
 								transactionName);
@@ -166,8 +168,7 @@ public class FragmentBudget extends Fragment {
 								.getItem(index);
 
 						// get the values of the item where i long clicked
-						// extract ALL values from the cursor which you need to
-						// edit or show
+						
 						String transactionId = cursor.getString(cursor
 								.getColumnIndex(ProviderBudget.KEY_ID));
 						String transactionName = cursor.getString(cursor
@@ -184,13 +185,11 @@ public class FragmentBudget extends Fragment {
 										+ transactionAmount, Toast.LENGTH_LONG)
 								.show();
 
-						// start the add activity, but give it the values so
-						// that it can edit the existing data
+					
 						Intent intent = new Intent(getActivity(),
 								BudgetAddActivity.class);
 
-						// add all the remaining values that you have extracted
-						// from the cursor
+						
 						intent.putExtra(ProviderBudget.KEY_ID, transactionId);
 						intent.putExtra(ProviderBudget.KEY_NAME,
 								transactionName);
@@ -225,7 +224,6 @@ public class FragmentBudget extends Fragment {
 						BudgetAddActivity.class);
 				i.putExtra("TYPE", "EXPENSE");
 				startActivity(i);
-
 			}
 		});
 
@@ -235,30 +233,26 @@ public class FragmentBudget extends Fragment {
 
 		getLoaderManager().initLoader(0, null, new LoaderCallbacks<Cursor>() {
 
-			// on create loader gets called whenever the fragment is loaded for
-			// the first time
+			
 			@Override
 			public android.support.v4.content.Loader<Cursor> onCreateLoader(
 					int arg0, Bundle arg1) {
-				// projection are the database fields that will be returned
+				
 				String[] projection = ProviderBudget.getColumns();
 
-				// selection are the database fields on which the query will be
-				// run
+			
 				String selection = "amount >= ?";
 
-				// selectionArgs are the criteria for the selection fields
+				
 				String[] selectionArgs = new String[] { "0" };
 
-				// return me the cursor for the query that i just made by using
-				// projection, selection and selectionArgs
+				
 				return new android.support.v4.content.CursorLoader(
 						getActivity(), ProviderBudget.CONTENT_URI, projection,
 						selection, selectionArgs, null);
 			}
 
-			// on load finished means that loading has finished and update your
-			// views with new data
+			
 			@Override
 			public void onLoadFinished(
 					android.support.v4.content.Loader<Cursor> arg0,
@@ -286,25 +280,21 @@ public class FragmentBudget extends Fragment {
 			@Override
 			public android.support.v4.content.Loader<Cursor> onCreateLoader(
 					int arg0, Bundle arg1) {
-				// projection are the database fields that will be returned
+				
 				String[] projection = ProviderBudget.getColumns();
 
-				// selection are the database fields on which the query will be
-				// run
+			
 				String selection = "amount < ?";
 
-				// selectionArgs are the criteria for the selection fields
 				String[] selectionArgs = new String[] { "0" };
 
-				// return me the cursor for the query that i just made by using
-				// projection, selection and selectionArgs
+				
 				return new android.support.v4.content.CursorLoader(
 						getActivity(), ProviderBudget.CONTENT_URI, projection,
 						selection, selectionArgs, null);
 			}
 
-			// on load finished means that loading has finished and update your
-			// views with new data
+			
 			@Override
 			public void onLoadFinished(
 					android.support.v4.content.Loader<Cursor> arg0,
@@ -315,7 +305,6 @@ public class FragmentBudget extends Fragment {
 				refreshTextViews();
 			}
 
-			// on loader reset gets called when the loader is reset
 			@Override
 			public void onLoaderReset(
 					android.support.v4.content.Loader<Cursor> arg0) {
@@ -326,8 +315,22 @@ public class FragmentBudget extends Fragment {
 		return rootView;
 
 	}
-
+	public String getCurrency() {
+		String symbol = BudgetPreferences.loadCurrencyFromFile(getActivity().getApplicationContext());
+		if(symbol.equals("USD"))
+			return "$";
+		else if(symbol.equals("EURO"))
+			return "€";
+		else if(symbol.equals("POUND"))
+			return "£";
+		else if(symbol.equals("AUD"))
+			return "AU$";
+		else
+			return "¥";	
+	}
 	private void refreshTextViews() {
+	
+		String symbol = getCurrency();
 		// manually update all other views with updated database values
 		String totalIncome = ProviderBudget.getTotalIncome(getActivity());
 		String totalExpense = ProviderBudget.getTotalExpense(getActivity())
@@ -341,13 +344,13 @@ public class FragmentBudget extends Fragment {
 		String remainingExpense = "";
 		String spendingExpense = "";
 
-		textViewIncomeTotal.setText("Total: " + totalIncome);
-		textViewIncomeRemaining.setText("Savings: " + remainingIncome);
-		textViewIncomeSpending.setText("Spending: " + spendingIncome);
+		textViewIncomeTotal.setText("Total: " + symbol + totalIncome);
+		textViewIncomeRemaining.setText("Savings: " + symbol + remainingIncome);
+		textViewIncomeSpending.setText("Spending: " + symbol + spendingIncome);
 
-		textViewExpenseTotal.setText("Total: " + totalExpense);
+		textViewExpenseTotal.setText("Total: " + symbol + totalExpense);
 
-		textViewExpenseRemaining.setText("Remaining: " + remainingExpense);
-		textViewExpenseSpending.setText("Spending: " + spendingExpense);
+		textViewExpenseRemaining.setText("Remaining: " + symbol + remainingExpense);
+		textViewExpenseSpending.setText("Spending: " + symbol + spendingExpense);
 	}
 }

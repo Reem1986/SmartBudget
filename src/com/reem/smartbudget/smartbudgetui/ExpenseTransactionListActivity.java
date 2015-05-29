@@ -48,12 +48,10 @@ public class ExpenseTransactionListActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(base.getApplicationContext(),
-						ExpenseTransactionAddActivity.class);
-				intent.putExtra(ProviderExpenseTransaction.KEY_ID_PARENT,
-						parentKeyId);
-
-				startActivity(intent);
+				Intent i = new Intent(getBaseContext(),
+						BudgetAddActivity.class);
+				i.putExtra("TYPE", "EXPENSE");
+				startActivity(i);
 			}
 		});
 

@@ -32,7 +32,7 @@
         </activity>
         <activity android:name="com.reem.smartbudget.smartbudgetui.BudgetAddActivity" >
         </activity>
-
+		<activity android:name="org.achartengine.GraphicalActivity" />
         <provider
             android:name="com.reem.smartbudget.smartbudgetcontent.ProviderBudget"
             android:authorities="com.reem.smartbudget.smartbudgetcontent.ProviderBudget"

@@ -29,10 +29,6 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 			return new FragmentReminder();
 		} else if (index == 2) {
 			return new FragmentReports();
-		} else if (index == 3) {
-			return new FragmentTransfer();
-		} else if (index == 4) {
-			return new FragmentShoppinglist();
 		} else {
 			return new FragmentSettings();
 		}

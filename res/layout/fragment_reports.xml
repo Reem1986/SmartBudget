@@ -2,7 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/parent_container" >
     
+   <LinearLayout
+        android:id="@+id/graphHolder"
+        android:layout_width="match_parent"
+        android:layout_height="195dp"
+        android:orientation="vertical" />
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginBottom="20dp" >
+
+       <TextView
+           android:id="@+id/totalIncome"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentTop="true"
+           android:layout_centerHorizontal="true"
+           android:text="Large Text"
+           android:textAppearance="?android:attr/textAppearanceLarge" />
+
+   </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/graphHolder2"
+        android:layout_width="match_parent"
+        android:layout_height="195dp"
+        android:orientation="vertical" >
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/totalExpense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    </RelativeLayout>
 
 </LinearLayout>

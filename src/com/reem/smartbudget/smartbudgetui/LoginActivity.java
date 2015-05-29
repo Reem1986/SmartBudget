@@ -52,9 +52,9 @@ public class LoginActivity extends Activity
             @Override
             public void onClick(View v)
             {
-
                 if (isPinFirstTime)
                 {
+                	BudgetPreferences.saveCurrencyToFile(getApplicationContext(), "USD".toString());
                     BudgetPreferences.savePinToFile(getApplicationContext(), editTextPassword.getText().toString());
 
                     Toast.makeText(getApplicationContext(), "Your pin has been saved", Toast.LENGTH_LONG).show();

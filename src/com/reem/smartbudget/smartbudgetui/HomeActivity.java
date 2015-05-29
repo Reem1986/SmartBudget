@@ -22,7 +22,7 @@ public class HomeActivity extends FragmentActivity implements ActionBar.TabListe
 
     private TabsPagerAdapter tabsPagerAdapter;
     private ViewPager viewPager;
-    public static String[] tabs = { "Budget", "Reminder", "Reports", "Transfer", "Shopping List", "Settings" };
+    public static String[] tabs = { "Budget", "Reminder", "Reports", "Settings" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

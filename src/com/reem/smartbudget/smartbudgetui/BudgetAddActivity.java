@@ -56,8 +56,7 @@ public class BudgetAddActivity extends FragmentActivity
         //if it was an edit
         if (!isAdd)
         {
-            //add intent extras data to your views as this is an edit call
-            //populate all your views with the intent extra values that you are getting
+          
             editTextName.setText(getIntent().getStringExtra(ProviderBudget.KEY_NAME));
 
             if (typeOfTransaction.equals("INCOME"))
@@ -66,31 +65,6 @@ public class BudgetAddActivity extends FragmentActivity
             	editTextAmount.setText(getIntent().getStringExtra(ProviderBudget.KEY_AMOUNT).replace("-", ""));
 
         }
-
-        //button icon
-        final Button buttonIcon = (Button) findViewById(R.id.buttonIcon);
-        buttonIcon.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v)
-            {
-                Log.v("clicked", "clicked");
-                final Drawable icon = buttonIcon.getBackground();
-
-                final Drawable iconApple = getResources().getDrawable(R.drawable.apple);
-                final Drawable iconRobot = getResources().getDrawable(R.drawable.ic_launcher);
-
-                if (icon == iconApple)
-                {
-                    buttonIcon.setBackgroundResource(R.drawable.ic_launcher);
-                }
-                else if (icon == iconRobot)
-                {
-                    buttonIcon.setBackgroundResource(R.drawable.apple);
-                }
-            }
-        });
-
         buttonDelete.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -113,7 +87,7 @@ public class BudgetAddActivity extends FragmentActivity
             public void onClick(View v)
             {
                 // extract all user input from those views compile the insert
-                // data into a new Transaction
+        
                 ClassTransaction newTransaction = new ClassTransaction();
 
                 if (isAdd)
@@ -133,7 +107,7 @@ public class BudgetAddActivity extends FragmentActivity
                 if (typeOfTransaction.equals("INCOME"))
                 	newTransaction.amount = Float.parseFloat(editTextAmount.getText().toString());
                 else
-                	newTransaction.amount = - Float.parseFloat(editTextAmount.getText().toString());
+                	newTransaction.amount = -Float.parseFloat(editTextAmount.getText().toString());
 
                 //using the id, our addTransaction function can know if it needs to edit or add
                 ProviderBudget.addTransaction(getApplicationContext(), newTransaction);

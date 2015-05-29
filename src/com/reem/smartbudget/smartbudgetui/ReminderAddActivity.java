@@ -45,13 +45,11 @@ public class ReminderAddActivity extends FragmentActivity {
 		checkBoxReminder = (CheckBox) findViewById(R.id.checkBoxRepeat);
 		reminderRadioGroup = (RadioGroup) findViewById(R.id.reminderRadioGroup);
 
-		// by default the daily radio button is checked
+		// by default 
 		reminderRadioGroup.check(R.id.radioDaily);
 
-		// if the check box is checked then show the radio group and hide the
-		// datepicker
-		// if the check box is unchecked then hide the radio group and show the
-		// datepicker
+		
+		
 		if (checkBoxReminder.isChecked()) {
 			datePickerReminder.setVisibility(View.GONE);
 			reminderRadioGroup.setVisibility(View.VISIBLE);
@@ -61,10 +59,7 @@ public class ReminderAddActivity extends FragmentActivity {
 			reminderRadioGroup.setVisibility(View.GONE);
 		}
 
-		// add a checked change listener to checkbox so that we can listen to
-		// user check box changes
-		// and hide/show the relevant views to select date or select repeat
-		// configuration
+		
 		checkBoxReminder
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -81,7 +76,7 @@ public class ReminderAddActivity extends FragmentActivity {
 					}
 				});
 
-		// check which radio button is selected
+		
 		reminderRadioGroup
 				.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
@@ -115,21 +110,14 @@ public class ReminderAddActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-				// this is a unique id for the alarm because only this alarm is
-				// being saved
-				// at this particular time (the value is going to be unique)
+				
 				long id = System.currentTimeMillis();
 
-				// get the text values from the title and description text
-				// fields
+				
 				String title = editTextName.getText().toString();
 				String text = editTextDescription.getText().toString();
 
-				// we're telling the alarm manager to call the alarmreceiver
-				// class whenever
-				// the alarm gets fired
-				// configuring the intent and the pending intent for the
-				// alarmmanager class
+				
 				Intent intent = new Intent(getApplicationContext(),
 						AlarmReceiver.class);
 				intent.putExtra("title", title);
@@ -175,30 +163,29 @@ public class ReminderAddActivity extends FragmentActivity {
 				}
 				// single
 				else {
-					// get the hour and minute from the time picker
+					// get the hour..
 					int hour = timePickerReminder.getCurrentHour(); // 24-hour
 																	// clock
 					int minute = timePickerReminder.getCurrentMinute();
 
-					// get the day, month and year from the date picker
+					// get the day..
 					int day = datePickerReminder.getDayOfMonth();
 					int month = datePickerReminder.getMonth();
 					int year = datePickerReminder.getYear();
 
-					// set a calendar object with the extracted time values
+				
 					Calendar calendar = Calendar.getInstance();
 					calendar.set(year, month, day, hour, minute, 0);
 
-					// get the selected time and date in milliseconds
+					
 					long alarmTime = calendar.getTimeInMillis();
 
-					// set a one-time alarm according to the milliseconds time
-					// that user has selected
+				
+					
 					alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime,
 							pendingIntent);
 
-					// key = "_REMINDER_,1"
-					// value = "1,shopping,get bread,12:30 - Weekly"
+					
 
 					String time = hour + ":" + minute + " - " + day + "/"
 							+ (month + 1) + "/" + year;

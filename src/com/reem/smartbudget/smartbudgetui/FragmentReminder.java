@@ -27,13 +27,10 @@ public class FragmentReminder extends Fragment {
 	public void onResume() {
 		super.onResume();
 
-		// get all the alarms from the shared preferences
 		alarmsList = BudgetPreferences.getAlarms(getActivity());
 
-		// create the adapter
 		adapterReminder = new AdapterReminder(getActivity(), alarmsList);
 
-		// set the listview according to the adapter
 		listViewReminder.setAdapter(adapterReminder);
 
 		listViewReminder
